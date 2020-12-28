@@ -2,15 +2,21 @@ package com.example.ise308.ozkan.ezgi.g14_cartrink
 
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 
 class NewCarPage : DialogFragment() {
-
+    lateinit var imageView: ImageView
+    lateinit var button: Button
+    private val pickImage = 100
+    private var imageUri: Uri? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -43,8 +49,12 @@ class NewCarPage : DialogFragment() {
 
 
 
-        val button = dialogView.findViewById(R.id.buttonLoadPicture) as Button
-
+        imageView = dialogView.findViewById(R.id.imageView) as ImageView
+        button = dialogView.findViewById(R.id.buttonLoadPicture) as Button
+        button.setOnClickListener {
+            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(gallery, pickImage)
+        }
 
         btnOk.setOnClickListener() {
 
@@ -73,6 +83,13 @@ class NewCarPage : DialogFragment() {
 
         return builder.create()
 
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == pickImage) {
+            imageUri = data?.data
+            imageView.setImageURI(imageUri)
+        }
     }
 
 

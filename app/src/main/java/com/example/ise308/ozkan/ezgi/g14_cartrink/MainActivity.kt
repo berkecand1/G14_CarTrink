@@ -77,6 +77,12 @@ class MainActivity : AppCompatActivity() {
         adapter!!.notifyDataSetChanged()
     }
 
+    fun showCar(carToShow: Int) {
+        val dialog = ShowCarListPage()
+        dialog.sendCarSelected(carList!![carToShow])
+        dialog.show(supportFragmentManager, "")
+    }
+
 
 
 
